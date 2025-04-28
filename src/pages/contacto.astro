@@ -1,5 +1,74 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { Phone, Mail, MapPin } from "lucide-astro";
 ---
 
-<Layout />
+<Layout>
+  <div class="container mx-auto py-16 px-4">
+    <h1 class="text-4xl font-bold text-primary text-center mb-4">
+      Contáctanos
+    </h1>
+    <p class="text-t-secondary text-center mb-10">
+      ¿Tienes alguna pregunta o necesitas ayuda? ¡Estamos aquí para ayudarte!
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <form
+        class="bg-white rounded-xl shadow-md p-6 space-y-4 border border-gray-100"
+      >
+        <div>
+          <label class="block text-sm text-t-secondary mb-1">Nombre</label>
+          <input
+            type="text"
+            placeholder="Tu nombre"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            required
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm text-t-secondary mb-1"
+            >Correo electrónico</label
+          >
+          <input
+            type="email"
+            placeholder="tu@email.com"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            required
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm text-t-secondary mb-1">Mensaje</label>
+          <textarea
+            placeholder="¿Cómo podemos ayudarte?"
+            rows="5"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+            required></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="bg-primary text-secondary px-4 py-2 rounded-md hover:bg-primary-hover transition-all duration-300"
+        >
+          Enviar mensaje
+        </button>
+      </form>
+
+      <div class="space-y-6 text-t-secondary">
+        <div class="flex items-center gap-4">
+          <Phone class="text-primary" />
+          <span>+56 9 1234 5678</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <Mail class="text-primary" />
+          <span>contacto@todocabanas.cl</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <MapPin class="text-primary" />
+          <span>Chile, Región de Los Lagos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
