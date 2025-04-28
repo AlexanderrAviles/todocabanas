@@ -1,0 +1,15 @@
+---
+import { FileText } from "lucide-astro";
+
+const { description } = Astro.props;
+---
+
+<div
+  class="bg-white rounded-xl shadow-sm p-6 mb-10 border border-gray-100 hover:shadow-md transition-shadow duration-300"
+>
+  <div class="flex items-center gap-3 mb-4">
+    <FileText class="text-primary" size={28} />
+    <h2 class="text-2xl font-bold text-primary">Descripción de la cabaña</h2>
+  </div>
+  <p class="text-t-secondary text-lg leading-relaxed">{description}</p>
+</div>

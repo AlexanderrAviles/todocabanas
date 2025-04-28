@@ -1,0 +1,23 @@
+---
+import ButtonLink from "./ButtonLink.astro";
+import Logo from "./Logo.astro";
+---
+
+<footer class="bg-dark-background rounded-lg shadow-sm mt-16">
+  <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+    <div class="sm:flex sm:items-center sm:justify-between">
+      <Logo />
+      <div class="hidden sm:ml-6 sm:block self-center">
+        <div class="flex space-x-4">
+          <ButtonLink path="/todocabanas">Inicio</ButtonLink>
+          <ButtonLink path="/todocabanas/cabanas">Cabañas</ButtonLink>
+          <ButtonLink path="/todocabanas/contacto">Contacto</ButtonLink>
+        </div>
+      </div>
+    </div>
+    <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+    <span class="block text-sm text-gray-500 text-center dark:text-gray-400">
+      © 2025 TodoCabañas
+    </span>
+  </div>
+</footer>

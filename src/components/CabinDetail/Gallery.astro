@@ -1,0 +1,216 @@
+---
+import type { Cabin } from "../../types/Cabin";
+
+// src/components/Gallery.astro
+const { cabin } = Astro.props as { cabin: Cabin };
+// Preparamos la lista de URLs de imágenes
+const images = cabin.images.map((img) => img.thumbnails.large.url);
+---
+
+<div id="gallery-root" class="relative mb-10">
+  <!-- Grid de imágenes principal -->
+  <div
+    id="gallery-grid"
+    class="grid grid-cols-2 grid-rows-2 gap-2 md:grid-cols-4 md:grid-rows-2 rounded-lg overflow-hidden"
+  >
+    {images.slice(0, 5).map((url, i) => (
+      <img
+        data-index={i}
+        src={url}
+        loading="lazy"
+        alt={`${cabin.name} ${i + 1}`}
+        class={`object-cover w-full h-40 md:h-48 cursor-pointer transition-transform duration-300 hover:scale-105 ${
+          i === 0 ? "col-span-2 row-span-2 h-full md:h-full" : ""
+        }`}
+      />
+    ))}
+  </div>
+
+  <!-- Botón "Mostrar todas las fotos" -->
+  <button
+    id="gallery-open-all"
+    class="absolute bottom-4 right-4 !bg-primary !text-secondary text-sm px-4 py-2 rounded-md shadow-md hover:!bg-primary-hover transition-all"
+  >
+    Mostrar todas las fotos
+  </button>
+
+  <!-- Modal -->
+  <div
+    id="gallery-modal"
+    class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 transition-opacity duration-500"
+  >
+    <div
+      id="gallery-modal-content"
+      class="relative max-w-5xl w-full p-4 bg-white rounded-lg overflow-hidden shadow-lg"
+    >
+      <button
+        id="gallery-close"
+        class="z-50 absolute top-4 right-4 !bg-primary !text-secondary rounded-full p-2 shadow-md hover:!bg-primary-hover transition"
+      >
+        <!-- X icon -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+
+      <!-- Imagen principal -->
+      <div class="relative flex items-center justify-center overflow-hidden">
+        <img
+          id="gallery-main-img"
+          src=""
+          alt="Modal image"
+          loading="lazy"
+          class="max-h-[80vh] w-auto transition-transform duration-500 cursor-zoom-in scale-100"
+        />
+      </div>
+
+      <!-- Controles de navegación -->
+      <button
+        id="gallery-prev"
+        class="absolute top-1/2 left-4 transform -translate-y-1/2 !bg-primary !text-secondary rounded-full p-2 shadow-md hover:!bg-primary-hover transition"
+      >
+        <!-- ChevronLeft -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+      <button
+        id="gallery-next"
+        class="absolute top-1/2 right-4 transform -translate-y-1/2 !bg-primary !text-secondary rounded-full p-2 shadow-md hover:!bg-primary-hover transition"
+      >
+        <!-- ChevronRight -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+
+      <!-- Galería inferior -->
+      <div id="gallery-thumbs" class="flex gap-2 overflow-x-auto mt-4 p-2">
+        {images.map((url, i) => (
+          <img
+            data-index={i}
+            src={url}
+            loading="lazy"
+            alt={`Mini ${i + 1}`}
+            class="w-20 h-20 object-cover rounded-md cursor-pointer border-2 border-transparent"
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const root = document.getElementById("gallery-root");
+    const grid = root.querySelectorAll("#gallery-grid img");
+    const openAll = root.querySelector("#gallery-open-all");
+    const modal = root.querySelector("#gallery-modal");
+    const mainImg = root.querySelector("#gallery-main-img");
+    const closeBtn = root.querySelector("#gallery-close");
+    const prevBtn = root.querySelector("#gallery-prev");
+    const nextBtn = root.querySelector("#gallery-next");
+    const thumbs = root.querySelectorAll("#gallery-thumbs img");
+
+    let currentIndex = 0;
+    let zoom = false;
+
+    function showModal(index) {
+      currentIndex = index;
+      zoom = false;
+      mainImg.src = thumbs[currentIndex].src;
+      mainImg.classList.remove("scale-150");
+      mainImg.classList.add("scale-100");
+      modal.classList.remove("hidden");
+      document.addEventListener("keydown", onKey);
+    }
+
+    function closeModal() {
+      modal.classList.add("hidden");
+      zoom = false;
+      document.removeEventListener("keydown", onKey);
+    }
+
+    function onKey(e) {
+      if (e.key === "Escape") closeModal();
+      if (e.key === "ArrowRight") showNext();
+      if (e.key === "ArrowLeft") showPrev();
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % thumbs.length;
+      zoom = false;
+      mainImg.src = thumbs[currentIndex].src;
+      mainImg.classList.replace("scale-150", "scale-100");
+    }
+    function showPrev() {
+      currentIndex = currentIndex === 0 ? thumbs.length - 1 : currentIndex - 1;
+      zoom = false;
+      mainImg.src = thumbs[currentIndex].src;
+      mainImg.classList.replace("scale-150", "scale-100");
+    }
+
+    grid.forEach((img) => {
+      img.addEventListener("click", (e) => {
+        const i = Number(e.currentTarget.dataset.index);
+        showModal(i);
+      });
+    });
+
+    openAll.addEventListener("click", () => showModal(0));
+    closeBtn.addEventListener("click", closeModal);
+    nextBtn.addEventListener("click", showNext);
+    prevBtn.addEventListener("click", showPrev);
+
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener("click", (e) => {
+        const i = Number(e.currentTarget.dataset.index);
+        currentIndex = i;
+        zoom = false;
+        mainImg.src = thumbs[currentIndex].src;
+      });
+    });
+
+    mainImg.addEventListener("click", () => {
+      zoom = !zoom;
+      if (zoom) {
+        mainImg.classList.replace("scale-100", "scale-150");
+      } else {
+        mainImg.classList.replace("scale-150", "scale-100");
+      }
+    });
+  })();
+</script>

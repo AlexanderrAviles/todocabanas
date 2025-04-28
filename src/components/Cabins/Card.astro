@@ -1,0 +1,29 @@
+---
+// src/components/Cabins/Card.astro
+import { Image } from "astro:assets";
+const { cabin } = Astro.props as { cabin: any };
+---
+
+<a
+  href={`/todocabanas/cabanas/${cabin.id}`}
+  class="group h-[23.5rem] bg-white rounded-lg shadow-md overflow-hidden duration-[0.2s] ease-in-out hover:scale-[1.02] hover:bg-primary-light cursor-pointer"
+  data-astro-preload="hover"
+  rel="prefetch"
+>
+  <Image
+    src={cabin.images[0]?.thumbnails.large.url}
+    alt={cabin.name}
+    height={260}
+    width={180}
+    class="w-full h-56 object-cover object-center"
+  />
+  <div class="p-4">
+    <h2 class="text-xl font-semibold text-primary">{cabin.name}</h2>
+    <p class="text-sm text-t-secondary mt-2">{cabin.description}</p>
+    <span
+      class="mt-4 font-bold inline-block bg-primary text-secondary px-4 py-2 rounded-md group-hover:bg-primary-hover group-hover:text-white"
+    >
+      Ver detalles
+    </span>
+  </div>
+</a>

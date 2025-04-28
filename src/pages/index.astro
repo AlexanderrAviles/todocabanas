@@ -1,0 +1,21 @@
+---
+import Preference from "../components/Home/Preference/Preference.astro";
+import Layout from "../layouts/Layout.astro";
+import { getCabins } from "../services/fecthCabin";
+import { getBanners } from "../services/fecthBanner";
+import Banner from "../components/Home/Banner/Banner.tsx";
+import Carousel from "../components/Home/CabinsAround/Carousel.tsx";
+
+const { cabins, offset } = await getCabins(); 
+const banners = await getBanners();
+const loading = !banners || banners.length === 0;
+---
+
+<Layout>
+  <Banner client:idle banners={banners} loading={loading} />
+  <h1 class="text-5xl pt-10 font-bold text-primary text-center mb-8">
+    Cabañas en tu zona
+  </h1>
+  <Carousel client:idle data={cabins} />
+  <Preference />
+</Layout>

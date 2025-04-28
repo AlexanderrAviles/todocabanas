@@ -1,0 +1,72 @@
+---
+// src/pages/cabanas/[id].astro
+
+import type { Cabin } from "../../types/Cabin";
+import { getCabins, getCabinById } from "../../services/fecthCabin";
+import Layout from "../../layouts/Layout.astro";
+import ShortDetails from "../../components/CabinDetail/ShortDetails.astro";
+import Gallery from "../../components/CabinDetail/Gallery.astro";
+import Description from "../../components/CabinDetail/Description.astro";
+import Owner from "../../components/CabinDetail/Owner.astro";
+import Details from "../../components/CabinDetail/Details.astro";
+import { MapPin, Home, Bed, ShowerHead } from "lucide-astro";
+
+// Generamos rutas SSG directamente desde Airtable
+export const prerender = true;
+export async function getStaticPaths() {
+  const allCabins: Cabin[] = [];
+  let offset: string | undefined;
+  do {
+    const { cabins, offset: next } = await getCabins(100, offset);
+    allCabins.push(...cabins);
+    offset = next;
+  } while (offset);
+
+  return allCabins.map((c) => ({ params: { id: c.id } }));
+}
+
+// 2) Fet
+
+const { id } = Astro.params;
+const cabin = await getCabinById(id);
+
+let parsedDetails: Record<string, string> = {};
+if (cabin?.detail) {
+  try {
+    parsedDetails = JSON.parse(cabin.detail);
+  } catch {
+    parsedDetails = {};
+  }
+}
+---
+
+<Layout>
+  <div class="container px-4 md:mx-auto py-10">
+    {
+      cabin ? (
+        <>
+          <h1 class="text-4xl font-bold text-primary mb-4">{cabin.name}</h1>
+
+          <Gallery cabin={cabin} />
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+            <ShortDetails title="Ciudad" data={cabin.city} icon={MapPin} />
+            <ShortDetails title="Dirección" data={cabin.address} icon={Home} />
+            <ShortDetails title="Habitaciones" data={cabin.rooms} icon={Bed} />
+            <ShortDetails
+              title="Baños"
+              data={cabin.bathroom}
+              icon={ShowerHead}
+            />
+          </div>
+
+          <Description description={cabin.description} />
+          <Owner ownerId={cabin.ownerId} />
+          <Details details={parsedDetails} />
+        </>
+      ) : (
+        <p class="text-primary text-center mt-4">Cabaña no encontrada.</p>
+      )
+    }
+  </div>
+</Layout>

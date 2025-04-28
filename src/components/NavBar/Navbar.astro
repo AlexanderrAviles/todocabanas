@@ -1,0 +1,48 @@
+---
+import Logo from "./Logo.astro";
+import ButtonLink from "./ButtonLink.astro";
+import ButtonLinkMobile from "./ButtonLinkMobile.astro";
+import ButtonMenu from "./ButtonMenu.astro";
+
+// Obtenemos la ruta actual. Astro.url es un objeto URL con la información de la URL actual.
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="bg-dark-background py-2 md:py-1">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="relative flex h-16 items-center justify-between">
+      <!-- Logo & menú de escritorio -->
+      <div class="flex flex-1 items-center justify-between sm:items-stretch">
+        <div class="flex shrink-0 items-center">
+          <Logo />
+        </div>
+        <div class="hidden sm:ml-6 sm:block self-center">
+          <div class="flex space-x-4">
+            <ButtonLink path="/todocabanas/" isActive={currentPath === "/todocabanas/"}
+              >Inicio</ButtonLink
+            >
+            <ButtonLink path="/todocabanas/cabanas" isActive={currentPath === "/todocabanas/cabanas"}
+              >Cabañas</ButtonLink
+            >
+            <ButtonLink path="/todocabanas/contacto" isActive={currentPath === "/todocabanas/contacto"}
+              >Contacto</ButtonLink
+            >
+          </div>
+        </div>
+      </div>
+      <!-- Botón para menú móvil -->
+      <div class="inset-y-0 right-0 flex items-center sm:hidden">
+        <ButtonMenu />
+      </div>
+    </div>
+  </div>
+
+  <!-- Menú móvil (oculto por defecto con la clase "hidden") -->
+  <div id="mobile-menu" class="sm:hidden hidden">
+    <div class="space-y-1 px-2 pt-2 pb-3">
+      <ButtonLinkMobile path="/">Inicio</ButtonLinkMobile>
+      <ButtonLinkMobile path="/cabanas">Cabañas</ButtonLinkMobile>
+      <ButtonLinkMobile path="/contacto">Contacto</ButtonLinkMobile>
+    </div>
+  </div>
+</nav>

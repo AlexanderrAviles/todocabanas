@@ -1,0 +1,10 @@
+---
+const { path, isActive = false } = Astro.props;
+const classNames = isActive
+  ? "rounded-md px-3 py-2 text-sm font-medium !bg-gray-900 !text-accent"
+  : "rounded-md px-3 py-2 text-sm font-medium !text-secondary hover:!bg-primary-hover hover:text-white";
+---
+
+<a href={path} class={classNames}>
+  <slot />
+</a>

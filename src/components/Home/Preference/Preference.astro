@@ -1,0 +1,47 @@
+---
+import CircleCheckBig from "lucide-astro/CircleCheckBig";
+
+const benefits = [
+  "Cabañas seleccionadas y verificadas",
+  "Fotos reales y descripciones claras",
+  "Explora alojamientos cerca de tu ubicación",
+  "Compara servicios: habitaciones, baños y más",
+  "Ubicación exacta en el mapa interactivo",
+  "Ideal para escapadas románticas, familiares o de aventura",
+];
+---
+
+<section class="pt-10">
+  <div class="container mx-auto px-4 min-h-[400px]">
+    <h2 class="text-5xl font-bold text-primary text-center mb-8">
+      ¿Por qué preferirnos?
+    </h2>
+
+    <p
+      class="text-t-secondary text-center max-w-3xl mx-auto text-lg mb-10 leading-relaxed"
+    >
+      En TodoCabañas nos dedicamos a conectar a los viajeros con experiencias
+      auténticas en medio de la naturaleza. Nuestra plataforma está diseñada
+      para que encuentres fácilmente la cabaña ideal, con opciones verificadas,
+      descripciones claras y fotografías reales.
+    </p>
+
+    <div class="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      {
+        benefits.map((benefit, index) => (
+          <div data-banner-id={index} class="flex items-start space-x-3">
+            <CircleCheckBig />
+            <p class="text-t-secondary text-lg leading-relaxed">{benefit}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <p
+      class="text-t-secondary text-center max-w-3xl mx-auto text-lg mt-10 leading-relaxed"
+    >
+      Con TodoCabañas, tu próxima aventura comienza de manera simple, rápida y
+      segura.
+    </p>
+  </div>
+</section>

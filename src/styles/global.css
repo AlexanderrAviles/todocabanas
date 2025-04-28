@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #480847;
+    /* Primario */
+    --color-primary-hover: #7A0C75;
+    /* Primario Claro (hover) */
+    --color-primary-light: rgba(72, 8, 71, 0.07);
+    /* Primario Muy Claro (hover) */
+    --color-secondary: #F5F5F5;
+    /* Fondo Claro */
+    --color-accent: #FFC300;
+    /* Acento (Dorado) */
+    --color-warning: #FF7F50;
+    /* Secundario (Coral) */
+    --color-danger: #B450AD;
+    /* Primario Muy Claro */
+
+    /* Opcional: Extras */
+    --color-t-primary: #1C1C1C;
+    /* Texto principal */
+    --color-t-secondary: #4B4B4B;
+    /* Texto secundario */
+    --color-neutral-background: #E0E0E0;
+    /* Fondo neutro adicional */
+    --color-dark-background: #000;
+    /* Fondo oscuro adicional */
+
+}

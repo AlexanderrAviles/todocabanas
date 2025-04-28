@@ -1,0 +1,70 @@
+---
+import { getOwnerById } from "../../services/fecthOwner";
+import type { Owner as OwnerType } from "../../types/Owner";
+
+const { ownerId } = Astro.props as { ownerId: string };
+
+const owner: OwnerType | null = await getOwnerById(ownerId);
+---
+
+{
+  !owner ? (
+    <p class="text-primary">Cargando propietario...</p>
+  ) : (
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-10 border border-gray-100 hover:shadow-md transition-shadow duration-300">
+      <h2 class="text-2xl font-bold text-primary mb-4">Propietario</h2>
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <img
+            src={owner.images[0]?.thumbnails.large.url}
+            alt={`Foto de ${owner.name}`}
+            class="h-18 w-18 object-cover rounded-md"
+          />
+          <p class="text-t-secondary text-lg leading-relaxed">{owner.name}</p>
+        </div>
+        <div class="flex gap-3">
+          {owner.phone && (
+            <a
+              href={`https://api.whatsapp.com/send?phone=${owner.phone}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="transition-transform duration-300 hover:scale-110 hover:brightness-110"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 text-green-500"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M20.52 3.478a11.843 11.843 0 00-16.764 0 11.886 11.886 0 00-3.49 8.414c0 2.096.547 4.147 1.588 5.972L2 22l4.28-1.126a11.868 11.868 0 005.946 1.531c4.019 0 7.808-1.567 10.656-4.415a11.844 11.844 0 000-16.76zm-1.414 15.346a9.945 9.945 0 01-7.801 3.24 9.997 9.997 0 01-5.164-1.416l-.368-.217-2.54.667.678-2.475-.24-.391a9.955 9.955 0 01-1.522-5.07 9.946 9.946 0 012.92-7.052 9.94 9.94 0 017.052-2.92c2.664 0 5.168 1.04 7.052 2.92a9.945 9.945 0 012.92 7.052 9.943 9.943 0 01-3.24 7.8zm-4.24-9.687l-1.25-.36a1.013 1.013 0 00-1.084.31l-.708.767a.505.505 0 01-.833-.093l-.31-.484a1.013 1.013 0 00-1.095-.438l-1.392.347a.506.506 0 00-.37.624l.398 1.199a1.013 1.013 0 00.634.676l1.203.396a.505.505 0 01.343.342l.397 1.203a1.012 1.012 0 00.676.634l1.199.397a.506.506 0 00.624-.37l.347-1.393a1.013 1.013 0 00-.438-1.095l-.484-.31a.505.505 0 01-.093-.833l.767-.708a1.013 1.013 0 00.31-1.085l-.36-1.25a.505.505 0 00-.608-.33z" />
+              </svg>
+            </a>
+          )}
+          {owner.email && (
+            <a
+              href={`mailto:${owner.email}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="transition-transform duration-300 hover:scale-110 hover:brightness-110"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 text-blue-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V8a2 2 0 00-2-2H3a2 2 0 00-2 2v6a2 2 0 002 2z"
+                />
+              </svg>
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}

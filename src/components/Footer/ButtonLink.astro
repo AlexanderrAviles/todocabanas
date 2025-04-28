@@ -1,0 +1,10 @@
+---
+const { path } = Astro.props;
+---
+
+<a
+  href={path}
+  class="text-sm font-medium !text-secondary hover:underline hover:!text-accent"
+>
+  <slot />
+</a>
